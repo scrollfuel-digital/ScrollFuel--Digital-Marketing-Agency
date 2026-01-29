@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Design system colors */
+:root {
+  --color-white: #ffffff;
+  --color-green: #8bc53f;
+  --color-yellow: #ffc93b;
+  --color-black: #000000;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+@layer utilities {
+  /* Backgrounds */
+  .bg-primary {
+    background-color: var(--color-green);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-yellow);
+  }
+
+  .bg-dark {
+    background-color: var(--color-black);
+  }
+  .bg-white {
+    background-color: var(--color-white);
+  }
+  .bg-muted {
+    background-color: #4f4d4d;
+  }
+  /* Text */
+  .text-primary {
+    color: var(--color-green);
+  }
+  .text-secondary {
+    color: var(--color-yellow);
+  }
+  .text-dark {
+    color: var(--color-black);
+  }
+  .text-white {
+    color: var(--color-white);
+  }
+  .text-muted {
+    color: #555;
+  }
+
+  /* Borders & accents */
+  .border-primary {
+    border-color: var(--color-green);
+  }
+
+  .border-secondary {
+    border-color: var(--color-yellow);
+  }
+  .underline-primary {
+    text-decoration: underline;
+    text-decoration-color: var(--color-green);
+  }
+  .hover-bg-primary:hover {
+    background-color: var(--color-green);
+  }
+
+  .hover-bg-secondary:hover {
+    background-color: var(--color-yellow);
+  }
+
+  .group:hover .group-hover-bg-primary {
+    background-color: var(--color-green);
+  }
+
+  .group:hover .group-hover-bg-secondary {
+    background-color: var(--color-yellow);
+  }
+
+  /* Hover text */
+  .hover-text-primary:hover {
+    color: var(--color-green);
+  }
+
+  .hover-text-secondary:hover {
+    color: var(--color-yellow);
+  }
+  .hover-text-white:hover {
+    color: var(--color-white);
+  }
+  .group:hover .group-hover-text-primary {
+    color: var(--color-green);
+  }
+
+  .group:hover .group-hover-text-secondary {
+    color: var(--color-yellow);
+  }
+
+  /* Hover borders */
+  .hover-border-primary:hover {
+    border-color: var(--color-green);
+  }
+
+  .group:hover .group-hover-border-primary {
+    border-color: var(--color-green);
+  }
+
+  .group:hover .group-hover-border-secondary {
+    border-color: var(--color-yellow);
+  }
+
+  /* Subtle glow for premium hover */
+  .group:hover .group-hover-glow {
+    box-shadow:
+      0 0 0 1px rgba(139, 197, 63, 0.35),
+      0 10px 30px rgba(139, 197, 63, 0.15);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
