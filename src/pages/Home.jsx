@@ -1,18 +1,19 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Link } from 'lucide-react';
-import { useRef } from "react";
+import { ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { textContainer, letterAnimation } from "../animations/text.js";
 import ClientsSection from "./ClientsSection.jsx";
 import About from "./About.jsx";
-// import { services } from "../data/services.js";
 import Services from "../components/Services.jsx";
+
+/* Diagonal fade */
 const fadeUp = {
     hidden: { opacity: 0, y: 60 },
     visible: (i = 1) => ({
         opacity: 1,
         y: 0,
         transition: {
-            delay: i * 0.12,
+            delay: i * 0.15,
             duration: 0.8,
             ease: "easeOut",
         },
@@ -21,234 +22,173 @@ const fadeUp = {
 
 export default function Home() {
     const heroRef = useRef(null);
+
+    // 1 Section refs array
+    const sectionRefs = useRef([]);
+
+    // 2 Automatic scroll
+    useEffect(() => {
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < sectionRefs.current.length) {
+                sectionRefs.current[i]?.scrollIntoView({ behavior: "smooth" });
+                i++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 1000); // 6 seconds per section
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // 3️⃣ Hero scroll animations
     const { scrollYProgress } = useScroll({
         target: heroRef,
         offset: ["start start", "end start"],
     });
 
-    const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-    const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+    const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
     return (
         <main className="bg-white text-black overflow-hidden">
+
             {/* HERO */}
             <section
-                ref={heroRef}
-                className="min-h-screen flex items-center relative px-6 lg:px-20"
+                ref={(el) => {
+                    heroRef.current = el;
+                    sectionRefs.current[0] = el;
+                }}
+                className="min-h-screen flex flex-col justify-center px-6 lg:px-20"
             >
+                {/* TOP TEXT */}
                 <motion.div
                     style={{ y: heroY, scale: heroScale }}
-                    className=" flex justify-center items-center w-full"
+                    className="text-center max-w-3xl mx-auto"
                 >
-                    <div className="text-center flex flex-col items-center">
-                        <motion.h1
-                            className="text-3xl lg:text-5xl font-bold leading-tight"
-                        >
-                            {/* Line 1 */}
-                            {/* <motion.div
-                                variants={textContainer}
-                                initial="hidden"
-                                animate="visible"
-                                className="flex flex-wrap"
-                            >
-                                {"Scrollfuel Digital Marketing Agency".split("").map((char, index) => (
-                                    <motion.span
-                                        key={index}
-                                        variants={letterAnimation}
-                                        className="inline-block"
-                                    >
-                                        {char === " " ? "\u00A0" : char}
-                                    </motion.span>
-                                ))}
-                            </motion.div> */}
-
-                            {/* Line 2 */}
-                            <motion.div
-                                variants={textContainer}
-                                initial="hidden"
-                                animate="visible"
-                                className="flex flex-wrap mt-1"
-                            >
-                                {"Driving Measurable Online Growth".split("").map((char, index) => (
-                                    <motion.span
-                                        key={index}
-                                        variants={letterAnimation}
-                                        className="inline-block"
-                                    >
-                                        {char === " " ? "\u00A0" : char}
-                                    </motion.span>
-                                ))}
-                            </motion.div>
-                        </motion.h1>
-
-                        <motion.p
-                            variants={fadeUp}
-                            custom={2}
-                            initial="hidden"
-                            animate="visible"
-                            className="mt-6 text-lg text-gray-700 max-w-xl text-center"
-                        >
-                            Scrollfuel Digital Marketing Agency helps brands grow online through data-driven SEO, paid ads, social media, and high-performance websites. We focus on measurable results, quality leads, and sustainable revenue growth.
-
-                        </motion.p>
-
-                        <motion.button
-                            variants={fadeUp}
-                            custom={3}
-                            initial="hidden"
-                            animate="visible"
-                            whileHover={{ scale: 1.05 }}
-                            className="mt-8 px-8 py-4 bg-(--color-green) text-black font-semibold rounded-full flex items-center space-x-2 gap-1"
-                        >
-                            Get Started <ArrowRight />
-                        </motion.button>
-                    </div>
-
-                    {/* HERO ILLUSTRATION */}
-                    {/* <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="relative"
-          >
-            <motion.div
-              animate={{ y: [0, -20, 0] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className=""
-            >
-              <img src="/assets/illustrations/seo.jpg" alt="" width="300px" height="10px" />
-            </motion.div>
-          </motion.div> */}
-                    {/* <motion.div
-                        initial={{ opacity: 0, y: -1200, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="relative"
-                    >
+                    <motion.h1 className="text-6xl font-bold leading-tight mt-10">
                         <motion.div
-                            animate={{ y: [0, -20, 0] }}
-                            transition={{
-                                repeat: Infinity,
-                                duration: 5,
-                                ease: "easeInOut",
-                            }}
-                            className=""
+                            variants={textContainer}
+                            initial="hidden"
+                            animate="visible"
+                            className="flex flex-wrap justify-center"
                         >
-                            <img
-                                src="/assets/illustrations/seo.jpg"
-                                alt="SEO Illustration"
-                                className="w-75 h-auto"
-                            />
+                            {"Driving Measurable Online Growth"
+                                .split("")
+                                .map((char, i) => (
+                                    <motion.span key={i} variants={letterAnimation}>
+                                        {char === " " ? "\u00A0" : char}
+                                    </motion.span>
+                                ))}
                         </motion.div>
-                    </motion.div> */}
+                    </motion.h1>
 
+                    <motion.p
+                        variants={fadeUp}
+                        custom={1}
+                        initial="hidden"
+                        animate="visible"
+                        className="mt-6 text-lg text-gray-700"
+                    >
+                        Scrollfuel Digital Marketing Agency helps brands grow online through data-driven SEO, paid ads, social media, and high-performance websites. We focus on measurable results, quality leads, and sustainable revenue growth.
+                    </motion.p>
+
+                    <motion.button
+                        variants={fadeUp}
+                        custom={2}
+                        initial="hidden"
+                        animate="visible"
+                        whileHover={{ scale: 1.05 }}
+                        className="mt-6 px-8 py-3 bg-(--color-green) font-semibold rounded-full flex items-center gap-2 mx-auto"
+                    >
+                        Get Started <ArrowRight />
+                    </motion.button>
                 </motion.div>
+
+                {/* BOTTOM ILLUSTRATIONS */}
+                <div className="mt-16 flex justify-between items-center w-full">
+                    {/* All your motion images stay the same */}
+                    <motion.img
+                        src="/assets/hero/desktop.png"
+                        alt="Screen"
+                        className="absolute bottom-80 right-10 w-55 drop-shadow-xl"
+                        initial={{ opacity: 0, y: -300, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/setting.png"
+                        alt="Gear"
+                        className="absolute top-110 right-20 w-30 h-30"
+                        initial={{ opacity: 0, x: "100vw", scale: 0.6 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/mobile.png"
+                        alt="Mobile"
+                        className="absolute top-125 right-56 w-30 h-30"
+                        initial={{ opacity: 0, y: "100vh", scale: 0.6 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 1.0 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/like.png"
+                        alt="Like"
+                        className="absolute top-110 right-70 w-17.5 "
+                        initial={{ opacity: 0, x: -40, y: -40, rotate: -15, scale: 0.6 }}
+                        animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: 1.5 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/mike.png"
+                        alt="Mike"
+                        className="absolute top-120 right-110 w-60 h-60"
+                        initial={{ opacity: 0, y: "100vh", rotate: -15, scale: 0.6 }}
+                        animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: 2.0 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/gmail.png"
+                        alt="Gear"
+                        className="absolute top-150 right-200 w-37.5"
+                        initial={{ opacity: 0, y: "100vh", scale: 0.6 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 2.0 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/search.png"
+                        alt="Gear"
+                        className="absolute top-150 right-240 w-37.5"
+                        initial={{ opacity: 0, y: "-100vh", scale: 0.6 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 1.5 }}
+                    />
+                    <motion.img
+                        src="/assets/hero/laptop.png"
+                        alt="Gear"
+                        className="absolute top-100 right-280 w-80.5 h-80"
+                        initial={{ opacity: 0, x: "-100vw", scale: 0.6 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+                    />
+                </div>
             </section>
-            {/* Client */}
-            <section className="">
-                <ClientsSection />
-            </section>
+
+            {/* CLIENTS */}
+            <ClientsSection ref={(el) => (sectionRefs.current[1] = el)} />
 
             {/* SERVICES */}
-            <section>
-                <Services />
-            </section>
+            <Services ref={(el) => (sectionRefs.current[2] = el)} />
 
-            {/* <section className="py-32 px-6 lg:px-20 bg-black text-white">
-                <motion.h2
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="text-4xl font-bold mb-20"
-                >
-                    What we do best
-                </motion.h2>
+            {/* ABOUT */}
+            <About ref={(el) => (sectionRefs.current[3] = el)} />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    {[
-                        "SEO & Growth",
-                        "Paid Advertising",
-                        "Brand & Web Design",
-                    ].map((service, i) => (
-                        <motion.div
-                            key={service}
-                            variants={fadeUp}
-                            custom={i}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            whileHover={{ y: -10 }}
-                            className="bg-white text-black p-8 rounded-2xl relative overflow-hidden"
-                        >
-                            <div className="h-24 mb-6 bg-(--color-green) rounded-xl flex items-center justify-center">
-                                Illustration
-                            </div>
-
-                            <h3 className="text-xl font-semibold mb-2">{service}</h3>
-                            <p className="text-gray-700">
-                                Strategic execution focused on results, conversions, and long
-                                term growth.
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section> */}
-
-            {/* PROCESS */}
-            {/* <section className="py-32 px-6 lg:px-20">
-                <motion.h2
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    className="text-4xl font-bold mb-20"
-                >
-                    How we work
-                </motion.h2>
-
-                <div className="space-y-24">
-                    {[
-                        "Research & Strategy",
-                        "Execution & Optimization",
-                        "Scale & Growth",
-                    ].map((step, i) => (
-                        <motion.div
-                            key={step}
-                            initial={{ opacity: 0, x: i % 2 === 0 ? -80 : 80 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            viewport={{ once: true }}
-                            className="flex flex-col lg:flex-row gap-12 items-center"
-                        >
-                            <div className="flex-1">
-                                <h3 className="text-2xl font-semibold mb-4">{step}</h3>
-                                <p className="text-gray-700">
-                                    Every decision is driven by data, testing, and measurable
-                                    performance.
-                                </p>
-                            </div>
-
-                            <motion.div
-                                animate={{ rotate: [0, 3, 0] }}
-                                transition={{ repeat: Infinity, duration: 5 }}
-                                className="flex-1 h-64 bg-(--color-yellow) rounded-3xl flex items-center justify-center"
-                            >
-                                Illustration
-                            </motion.div>
-                        </motion.div>
-                    ))}
-                </div>
-            </section> */}
-            {/* Testimonial */}
-            
-            {/*  */}
-            {/* About Us */}
-            <section>
-                <About />
-            </section>
             {/* CTA */}
-            <section className="py-32 px-6 lg:px-20 bg-(--color-green) text-black">
+            <section
+                ref={(el) => (sectionRefs.current[4] = el)}
+                className="py-32 px-6 lg:px-20 bg-(--color-green)"
+            >
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -259,12 +199,16 @@ export default function Home() {
                     <h2 className="text-4xl font-bold mb-6">
                         Ready to scale your brand?
                     </h2>
+
                     <p className="text-lg mb-10">
-                        Let’s build something impactful, animated, and conversion-focused.
+                        Let’s build something impactful and conversion-focused.
                     </p>
-                    <button className="px-10 py-4 bg-black text-white rounded-full font-semibold">
-                       <a href="/contact">Contact Us</a> 
-                    </button>
+
+                    <a href="/contact">
+                        <button className="px-10 py-4 bg-black text-white rounded-full font-semibold">
+                            Contact Us
+                        </button>
+                    </a>
                 </motion.div>
             </section>
         </main>

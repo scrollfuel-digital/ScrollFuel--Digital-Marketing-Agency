@@ -7,13 +7,14 @@ import {
     BarChart3,
     Users
 } from "lucide-react";
+import React from "react";
 
 const fadeUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0 }
 };
 
-export default function AboutUs() {
+const AboutUs = React.forwardRef((props, ref) =>{
     return (
         <section className="bg-white text-black overflow-hidden">
 
@@ -157,4 +158,5 @@ export default function AboutUs() {
 
         </section>
     );
-}
+})
+export default AboutUs

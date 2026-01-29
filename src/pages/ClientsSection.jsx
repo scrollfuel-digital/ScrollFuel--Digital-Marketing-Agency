@@ -1,5 +1,5 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 
 const logos = [
@@ -24,7 +24,7 @@ const logos = [
     "/assets/ClientLogo/switch.png",
 ];
 
-export default function ClientsSection() {
+const ClientsSection = React.forwardRef((props, ref) => {
     const counterRef = useRef(null);
     const sectionRef = useRef(null);
 
@@ -116,4 +116,5 @@ export default function ClientsSection() {
             </div>
         </section>
     );
-}
+})
+export default ClientsSection
